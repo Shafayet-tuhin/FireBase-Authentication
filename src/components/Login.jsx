@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { signInWithEmailAndPassword , sendPasswordResetEmail} from "firebase/auth";
 import auth from "../firebase/firebase.config";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const Login = () => {
     const [error, setError] = useState(false);
@@ -18,6 +19,12 @@ const Login = () => {
           console.log(res);
           setError(false);
           setLoginSuccess(true); // Update login status to true
+         
+          Swal.fire({
+            title: "Login Successfull",
+            icon: "success"
+          });
+
         })
         .catch((err) => {
           console.log("Error", err.message);
@@ -40,6 +47,14 @@ const Login = () => {
         })
         .catch((err) => console.log("Error sending password reset email", err.message));
     };
+
+    const hadleError = (el) => {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Invalid Email or Password", 
+          });
+    }
   
     return (
       <div className="hero min-h-screen bg-base-200">
@@ -101,9 +116,7 @@ const Login = () => {
                 </Link>{" "}
               </p>
   
-              {error && (
-                <p className="text-red-500 text-sm">Invalid email or password</p>
-              )}
+              {error && hadleError()}
             </form>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import auth from "../firebase/firebase.config";
 import { FaEye, FaEyeSlash } from "react-icons/fa6"; // icons
 import { Link } from "react-router-dom";
-
+import Swal from 'sweetalert2'
 
 const DaisyUiLogin = () => {
   const [error, setError] = useState("");
@@ -42,7 +42,13 @@ const DaisyUiLogin = () => {
         setSuccess(true);
         sendEmailVerification(res.user)
           .then(() => {
-            alert("Please varify your email")
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Your work has been saved.  Please Varify your email",
+              showConfirmButton: false,
+              timer: 1500
+            });
           })
       })
       .catch((err) => {
@@ -50,11 +56,14 @@ const DaisyUiLogin = () => {
         console.log(err.message);
         setSuccess(false);
       });
+
+
   };
 
   const seePassword = () => {
     setSee(!see);
   }
+
 
   return (
     <div className="hero min-h-screen bg-base-200">
