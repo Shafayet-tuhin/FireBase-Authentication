@@ -60,7 +60,8 @@ const DaisyUiLogin = () => {
 
   };
 
-  const seePassword = () => {
+  const seePassword = (e) => {
+    e.preventDefault();
     setSee(!see);
   }
 
@@ -105,7 +106,7 @@ const DaisyUiLogin = () => {
                 />
 
                 <button className="btn btn-info absolute ml-2" onClick={seePassword}>
-                  {see ? <FaEyeSlash /> : <FaEye />}</button>
+                  {see ? <FaEyeSlash />  : <FaEye/> }</button>
               </div>
 
               <label className="label">

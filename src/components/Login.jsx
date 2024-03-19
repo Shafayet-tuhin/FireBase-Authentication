@@ -3,12 +3,14 @@ import { signInWithEmailAndPassword , sendPasswordResetEmail} from "firebase/aut
 import auth from "../firebase/firebase.config";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2'
+import { FaEye , FaEyeSlash } from "react-icons/fa6";
 
 const Login = () => {
     const [error, setError] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
     const emailRef = useRef(null);
-    
+    const [see , setSee] = useState(false);
+
     const handleLogin = (e) => {
       e.preventDefault();
       const email = e.target.email.value;
@@ -16,7 +18,19 @@ const Login = () => {
   
       signInWithEmailAndPassword(auth, email, password)
         .then((res) => {
-          console.log(res);
+          const user = res.user;
+
+          if ( !user.emailVerified ) {
+
+               Swal.fire({
+                title: "Email isn't verified",
+                icon: "error"
+              }); 
+
+               return ;
+          }
+
+          console.log(res)
           setError(false);
           setLoginSuccess(true); // Update login status to true
          
@@ -43,7 +57,10 @@ const Login = () => {
     
       sendPasswordResetEmail(auth, email)
         .then((res) => {
-          alert("Please Check your email")
+          Swal.fire({
+            title: "Please Check Your Email",
+            icon: "success",
+          }); 
         })
         .catch((err) => console.log("Error sending password reset email", err.message));
     };
@@ -54,6 +71,11 @@ const Login = () => {
             title: "Oops...",
             text: "Invalid Email or Password", 
           });
+    }
+
+    const handleSee = (e) => {
+      e.preventDefault();
+      setSee(!see) ; 
     }
   
     return (
@@ -81,18 +103,27 @@ const Login = () => {
                   name="email"
                   ref={emailRef}
                 />
+    
               </div>
+              
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Password</span>
                 </label>
-                <input
-                  type="password"
+
+
+              <div className="flex gap-2">
+              <input
+                  type={see ? "text" : "password" }
                   placeholder="password"
                   className="input input-bordered"
                   required
                   name="password"
                 />
+                
+                <button className="btn btn-primary" onClick={handleSee}> {see ? <FaEyeSlash /> : <FaEye /> } </button>
+              </div>
+
                 <label className="label">
                   <a
                     onClick={handleForget}
