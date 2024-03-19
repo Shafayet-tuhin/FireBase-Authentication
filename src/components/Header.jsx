@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { IoMdMail } from "react-icons/io";
 
 const Header = () => {
 
@@ -26,7 +27,7 @@ const Header = () => {
                         }
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Email Authorization</a>
+                <a className="btn btn-ghost text-xl"><IoMdMail />E-mail Authorization</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
